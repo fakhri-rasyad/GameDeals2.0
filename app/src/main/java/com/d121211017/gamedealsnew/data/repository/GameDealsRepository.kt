@@ -7,7 +7,7 @@ class GameDealsRepository(
 ) {
     suspend fun getDealsList() = apiService.getCurrentDeals()
 
-    private companion object {
+    companion object {
         @Volatile
         private var INSTANCE : GameDealsRepository? = null
 

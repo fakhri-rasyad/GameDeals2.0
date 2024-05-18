@@ -2,12 +2,6 @@ package com.d121211017.gamedealsnew.data.entity
 
 import com.google.gson.annotations.SerializedName
 
-data class DealList(
-
-	@field:SerializedName("GameList")
-	val gameList: List<DealListItem?>? = null
-)
-
 data class DealListItem(
 
 	@field:SerializedName("gameID")

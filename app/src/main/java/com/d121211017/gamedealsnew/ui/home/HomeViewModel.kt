@@ -25,6 +25,7 @@ class HomeViewModel(private val gameDealsRepository: GameDealsRepository): ViewM
                 Log.d("HomeViewModel", gameDealsList.first().toString())
             } catch(e:Exception) {
                 Log.d("HomeViewModel", e.message.toString())
+                _uiState.update { HomeViewModelState.Failure }
             }
         }
     }

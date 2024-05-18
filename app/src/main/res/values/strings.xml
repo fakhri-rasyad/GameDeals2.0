@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">GameDealsNew</string>
     <string name="thumbnail_desc">Game Thumbnail</string>
+    <string name="homeactivity">HomeActivity</string>
 </resources>

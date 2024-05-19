@@ -2,13 +2,17 @@ package com.d121211017.gamedealsnew.ui.recyclerViewAdapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.d121211017.gamedealsnew.data.entity.DealListItem
 import com.d121211017.gamedealsnew.databinding.HomeListItemBinding
 
-class HomeListAdapter(private val dealList: List<DealListItem>) : RecyclerView.Adapter<HomeListAdapter.ViewHolder>() {
+class HomeListAdapter(
+) : PagingDataAdapter<DealListItem, HomeListAdapter.ViewHolder>(
+    DIFF_CALLBACK) {
     inner class ViewHolder(binding: HomeListItemBinding) : RecyclerView.ViewHolder(binding.root){
         val gameThumb = binding.gameThumb
         val gameTitle = binding.gameTitle
@@ -21,18 +25,34 @@ class HomeListAdapter(private val dealList: List<DealListItem>) : RecyclerView.A
     }
 
     override fun getItemCount(): Int {
-        return dealList.size
+        return snapshot().size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val dealItem = dealList[position]
-        holder.apply {
-            this.gamePrice.text = dealItem.salePrice
-            this.gameTitle.text = dealItem.title
-            this.gameThumb.load(dealItem.thumb){
-                crossfade(true)
-                transformations(RoundedCornersTransformation(radius = 12.0F))
+//        val dealItem = dealList[position]
+        val dealItem = getItem(position)
+        if(dealItem != null){
+            holder.apply {
+                this.gamePrice.text = dealItem.salePrice
+                this.gameTitle.text = dealItem.title
+                this.gameThumb.load(dealItem.thumb){
+                    crossfade(true)
+                    transformations(RoundedCornersTransformation(radius = 12.0F))
+                }
             }
+        }
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DealListItem>(){
+            override fun areItemsTheSame(oldItem: DealListItem, newItem: DealListItem): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: DealListItem, newItem: DealListItem): Boolean {
+                return oldItem.dealID == newItem.dealID
+            }
+
         }
     }
 }

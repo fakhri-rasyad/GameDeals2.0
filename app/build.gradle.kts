@@ -61,6 +61,8 @@ dependencies {
     //Image
     implementation("io.coil-kt:coil-compose:2.6.0")
 
+    //Paging
+    implementation("androidx.paging:paging-runtime-ktx:3.3.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

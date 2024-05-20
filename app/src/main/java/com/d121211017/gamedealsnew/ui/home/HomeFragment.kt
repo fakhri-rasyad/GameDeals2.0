@@ -1,45 +1,48 @@
 package com.d121211017.gamedealsnew.ui.home
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import com.d121211017.gamedealsnew.data.entity.DealListItem
-import com.d121211017.gamedealsnew.databinding.ActivityHomeBinding
+import com.d121211017.gamedealsnew.databinding.FragmentHomeBinding
 import com.d121211017.gamedealsnew.ui.ViewModelFactory
 import com.d121211017.gamedealsnew.ui.loadStateAdapter.LoadingStateAdapter
 import com.d121211017.gamedealsnew.ui.recyclerViewAdapter.HomeListAdapter
 
-class HomeActivity : AppCompatActivity() {
+class HomeFragment : Fragment() {
 
-    private lateinit var binding: ActivityHomeBinding
-    private lateinit var viewModel: HomeViewModel
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        viewModel = getViewModel(this)
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
-        val gridLayoutManager = GridLayoutManager(this, 2)
+    private lateinit var viewModel :HomeViewModel
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = getViewModel(activity as AppCompatActivity)
+        val gridLayoutManager = GridLayoutManager(activity, 2)
         binding.homeRv.layoutManager = gridLayoutManager
 
-        viewModel.deals.observe(this){
+        viewModel.deals.observe(viewLifecycleOwner){
             setUpRecyclerView(it)
         }
+    }
 
-
-//        lifecycleScope.launch {
-//            viewModel.uiState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect{
-//                when(it){
-//                    is HomeViewModelState.Success -> setUpRecyclerView(it.dealsList)
-//                    is HomeViewModelState.Failure -> makeToast()
-//                    is HomeViewModelState.Loading -> binding.homePg.visibility = View.VISIBLE
-//                }
-//            }
-//        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setUpRecyclerView(
@@ -57,12 +60,9 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun makeToast(){
-        Toast.makeText(this, "Error no connection", Toast.LENGTH_SHORT).show()
-    }
-
     private fun getViewModel(appCompatActivity: AppCompatActivity) : HomeViewModel{
         val factory = ViewModelFactory.getViewModelInstance(application = appCompatActivity.application)
         return ViewModelProvider(appCompatActivity, factory)[HomeViewModel::class.java]
     }
+
 }

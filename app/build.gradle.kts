@@ -64,6 +64,11 @@ dependencies {
     //Paging
     implementation("androidx.paging:paging-runtime-ktx:3.3.0")
 
+    //Fragemnt navigation
+    implementation("androidx.fragment:fragment-ktx:1.7.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

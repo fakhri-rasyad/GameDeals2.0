@@ -17,6 +17,7 @@ class HomeListAdapter(
         val gameThumb = binding.gameThumb
         val gameTitle = binding.gameTitle
         val gamePrice = binding.gamePrice
+        val gameDiscountPrice = binding.gamePriceDiscount
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,9 +34,10 @@ class HomeListAdapter(
         val dealItem = getItem(position)
         if(dealItem != null){
             holder.apply {
-                this.gamePrice.text = dealItem.salePrice
-                this.gameTitle.text = dealItem.title
-                this.gameThumb.load(dealItem.thumb){
+                gamePrice.text = dealItem.normalPrice
+                gameDiscountPrice.text = dealItem.salePrice
+                gameTitle.text = dealItem.title
+                gameThumb.load(dealItem.thumb){
                     crossfade(true)
                     transformations(RoundedCornersTransformation(radius = 12.0F))
                 }

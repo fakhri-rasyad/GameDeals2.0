@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import com.d121211017.gamedealsnew.data.entity.DealListItem
@@ -12,11 +15,14 @@ import com.d121211017.gamedealsnew.databinding.ActivityHomeBinding
 import com.d121211017.gamedealsnew.ui.ViewModelFactory
 import com.d121211017.gamedealsnew.ui.loadStateAdapter.LoadingStateAdapter
 import com.d121211017.gamedealsnew.ui.recyclerViewAdapter.HomeListAdapter
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var viewModel: HomeViewModel
+    private lateinit var homeAdapter : HomeListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -26,8 +32,21 @@ class HomeActivity : AppCompatActivity() {
         val gridLayoutManager = GridLayoutManager(this, 2)
         binding.homeRv.layoutManager = gridLayoutManager
 
-        viewModel.deals.observe(this){
-            setUpRecyclerView(it)
+        homeAdapter = HomeListAdapter()
+
+//        viewModel.deals.observe(this){
+//            setUpRecyclerView(it)
+//        }
+
+        setUpRecyclerView(homeAdapter)
+
+        lifecycleScope.launch {
+            homeAdapter.loadStateFlow.collectLatest {pagingLoadStates ->
+                binding.homePg.isVisible = pagingLoadStates.refresh is LoadState.Loading
+            }
+            viewModel.deals.collectLatest {pagingData ->
+                updateRecyclerList(pagingData, homeAdapter)
+            }
         }
 
 
@@ -42,19 +61,38 @@ class HomeActivity : AppCompatActivity() {
 //        }
     }
 
+//    private fun setUpRecyclerView(
+//        dealList : PagingData<DealListItem>
+//    ){
+//        binding.apply {
+//            val adapter = HomeListAdapter()
+//            this.homeRv.adapter = adapter.withLoadStateFooter(
+//                footer = LoadingStateAdapter {
+//                    adapter.retry()
+//                }
+//            )
+//            adapter.submitData(lifecycle,dealList)
+//            this.homePg.visibility = View.INVISIBLE
+//        }
+//    }
+
     private fun setUpRecyclerView(
-        dealList : PagingData<DealListItem>
+        adapter: HomeListAdapter
     ){
         binding.apply {
-            val adapter = HomeListAdapter()
             this.homeRv.adapter = adapter.withLoadStateFooter(
                 footer = LoadingStateAdapter {
                     adapter.retry()
                 }
             )
-            adapter.submitData(lifecycle,dealList)
-            this.homePg.visibility = View.INVISIBLE
         }
+    }
+
+    private fun updateRecyclerList(
+        dealList : PagingData<DealListItem>,
+        adapter: HomeListAdapter
+    ) {
+        adapter.submitData(lifecycle,dealList)
     }
 
     private fun makeToast(){

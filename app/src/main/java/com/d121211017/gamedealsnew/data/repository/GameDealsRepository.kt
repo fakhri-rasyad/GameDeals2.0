@@ -8,13 +8,25 @@ import androidx.paging.liveData
 import com.d121211017.gamedealsnew.data.entity.DealListItem
 import com.d121211017.gamedealsnew.data.paging.HomePagingSource
 import com.d121211017.gamedealsnew.data.retrofit.ApiService
+import kotlinx.coroutines.flow.Flow
 
 class GameDealsRepository(
     private val apiService: ApiService
 ) {
 //    suspend fun getDealsList() = apiService.getCurrentDeals()
 
-    fun getDealsList() : LiveData<PagingData<DealListItem>>{
+//    fun getDealsList() : LiveData<PagingData<DealListItem>>{
+//        return Pager(
+//            config = PagingConfig(
+//                pageSize = 10
+//            ),
+//            pagingSourceFactory = {
+//                HomePagingSource(apiService)
+//            }
+//        ).liveData
+//    }
+
+    fun getDealsList() : Flow<PagingData<DealListItem>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10
@@ -22,7 +34,7 @@ class GameDealsRepository(
             pagingSourceFactory = {
                 HomePagingSource(apiService)
             }
-        ).liveData
+        ).flow
     }
 
     companion object {

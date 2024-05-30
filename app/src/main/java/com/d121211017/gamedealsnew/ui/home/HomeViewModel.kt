@@ -8,6 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.d121211017.gamedealsnew.data.entity.DealListItem
 import com.d121211017.gamedealsnew.data.repository.GameDealsRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,14 +34,14 @@ class HomeViewModel(private val gameDealsRepository: GameDealsRepository): ViewM
 //        }
 //    }
 
-    val deals: LiveData<PagingData<DealListItem>> = gameDealsRepository.getDealsList().cachedIn(viewModelScope)
+    val deals: Flow<PagingData<DealListItem>> = gameDealsRepository.getDealsList().cachedIn(viewModelScope)
 
 }
 
-sealed interface HomeViewModelState{
-    data object Loading: HomeViewModelState
-
-    data class Success(val dealsList: List<DealListItem>) : HomeViewModelState
-
-    data object Failure: HomeViewModelState
-}
+//sealed interface HomeViewModelState{
+//    data object Loading: HomeViewModelState
+//
+//    data class Success(val dealsList: List<DealListItem>) : HomeViewModelState
+//
+//    data object Failure: HomeViewModelState
+//}

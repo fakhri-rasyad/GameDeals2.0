@@ -17,4 +17,15 @@
     <string name="store_icon_template">"https://www.cheapshark.com/img/stores/icons/%1$s.png"</string>
     <string name="store_banner_template">"https://www.cheapshark.com/img/stores/banners/%1$s.png"</string>
     <string name="store_logo_template">"https://www.cheapshark.com/img/stores/logos/%1$s.png"</string>
+    <string-array name="sort_by">
+        <item>DealRating</item>
+        <item>Title</item>
+        <item>Savings</item>
+        <item>Price</item>
+        <item>Metacritic</item>
+        <item>Reviews</item>
+        <item>Release</item>
+        <item>Store</item>
+        <item>Recent</item>
+    </string-array>
 </resources>

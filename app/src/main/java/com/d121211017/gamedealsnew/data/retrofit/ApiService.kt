@@ -16,5 +16,6 @@ interface ApiService {
         @Query("lowerPrice") lowerPrice: Int? = null,
         @Query("upperPrice") upperPrice: Int? = null,
         @Query("metacritic") metacritic: Int? = null,
+        @Query("title") title: String? = null
     ) : List<DealListItem>
 }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
+import com.d121211017.gamedealsnew.R
 import com.d121211017.gamedealsnew.data.entity.DealListItem
 import com.d121211017.gamedealsnew.databinding.HomeListItemBinding
 
@@ -15,6 +16,7 @@ class HomeListAdapter(
     DIFF_CALLBACK) {
     inner class ViewHolder(binding: HomeListItemBinding) : RecyclerView.ViewHolder(binding.root){
         val gameThumb = binding.gameThumb
+        val storeIcon = binding.storeIcon
         val gameTitle = binding.gameTitle
         val gamePrice = binding.gamePrice
         val gameDiscountPrice = binding.gamePriceDiscount
@@ -30,7 +32,6 @@ class HomeListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        val dealItem = dealList[position]
         val dealItem = getItem(position)
         if(dealItem != null){
             holder.apply {
@@ -41,7 +42,17 @@ class HomeListAdapter(
                     crossfade(true)
                     transformations(RoundedCornersTransformation(radius = 12.0F))
                 }
+                storeIcon.load(
+                    holder.itemView.context.getString(
+                        R.string.store_banner_template,
+                        dealItem.storeID
+                    )
+                ){
+                    crossfade(true)
+                }
             }
+
+
         }
     }
 

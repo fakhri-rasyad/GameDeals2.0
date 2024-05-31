@@ -14,4 +14,7 @@
     <string name="home_header_text">Today\'s Deals</string>
     <string name="filter_button">filter button</string>
     <string name="game_store_icon">game store icon</string>
+    <string name="store_icon_template">"https://www.cheapshark.com/img/stores/icons/%1$s.png"</string>
+    <string name="store_banner_template">"https://www.cheapshark.com/img/stores/banners/%1$s.png"</string>
+    <string name="store_logo_template">"https://www.cheapshark.com/img/stores/logos/%1$s.png"</string>
 </resources>

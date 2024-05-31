@@ -11,4 +11,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_placeholder">Example Text</string>
     <string name="loading_image">loading image</string>
+    <string name="home_header_text">Today\'s Deals</string>
+    <string name="filter_button">filter button</string>
+    <string name="game_store_icon">game store icon</string>
 </resources>

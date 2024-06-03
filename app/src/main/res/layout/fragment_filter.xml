@@ -13,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:focusable="false"
+        android:focusableInTouchMode="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,7 +23,8 @@
             android:id="@+id/game_title_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/game_title_input_hint" />
+            android:hint="@string/game_title_input_hint"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -118,29 +121,36 @@
         app:thumbHeight="24dp"
         />
 
-    <Button
-        android:id="@+id/apply_button"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/apply_filters"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/reset_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/reset_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="8dp"
-        android:text="@string/reset_filters"
-        android:textAlignment="center"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/price_slider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        >
+        <Button
+            android:id="@+id/apply_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/apply_filters"
+            android:textSize="16sp"
+            />
 
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="wrap_content"/>
 
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/reset_filters"
+            android:textAlignment="center"
+            android:textSize="16sp"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

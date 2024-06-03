@@ -17,6 +17,15 @@
     <string name="store_icon_template">"https://www.cheapshark.com/img/stores/icons/%1$s.png"</string>
     <string name="store_banner_template">"https://www.cheapshark.com/img/stores/banners/%1$s.png"</string>
     <string name="store_logo_template">"https://www.cheapshark.com/img/stores/logos/%1$s.png"</string>
+    <string name="game_title_input_hint">Put your game name here</string>
+    <string name="reset_filters">Reset Filters</string>
+    <string name="apply_filters">Apply Filters</string>
+    <string name="start_end_price">$0.0 - $0.0</string>
+    <string name="sort_title_text">Sort By</string>
+    <string name="price_range_title_text">Price Range</string>
+    <string name="game_stores_title_text">Game Stores</string>
+    <string name="price_range_value">$%1$s - $%2$s</string>
+    <string name="cheapshark_base_url">https://www.cheapshark.com%1$s</string>
     <string-array name="sort_by">
         <item>DealRating</item>
         <item>Title</item>

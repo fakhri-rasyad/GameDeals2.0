@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.d121211017.gamedealsnew.data.entity.DealListItem
 import com.d121211017.gamedealsnew.databinding.FragmentHomeBinding
 import com.d121211017.gamedealsnew.ui.ViewModelFactory
+import com.d121211017.gamedealsnew.ui.filter.FilterFragment
 import com.d121211017.gamedealsnew.ui.loadStateAdapter.LoadingStateAdapter
 import com.d121211017.gamedealsnew.ui.recyclerViewAdapter.HomeListAdapter
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -42,6 +44,13 @@ class HomeFragment : Fragment() {
         viewModel = getViewModel(activity as AppCompatActivity)
         val gridLayoutManager = GridLayoutManager(activity, 2)
         binding.homeRv.layoutManager = gridLayoutManager
+
+        binding.filterIcon.setOnClickListener {
+           val bottomSheetFilterDialogFragment  : BottomSheetDialogFragment = FilterFragment()
+            bottomSheetFilterDialogFragment.show(parentFragmentManager, "BSDFilterFragment")
+        }
+
+
 
         homeAdapter?.let {
             setUpRecyclerView(it)

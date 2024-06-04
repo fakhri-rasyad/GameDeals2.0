@@ -2,10 +2,13 @@ package com.d121211017.gamedealsnew.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.d121211017.gamedealsnew.data.entity.DealFilter
 import com.d121211017.gamedealsnew.data.entity.DealListItem
 import com.d121211017.gamedealsnew.data.retrofit.ApiService
 
-class HomePagingSource(private val apiService: ApiService) : PagingSource<Int, DealListItem>() {
+class HomePagingSource(
+    private val apiService: ApiService,
+    private val dealFilter: DealFilter) : PagingSource<Int, DealListItem>() {
 
     private companion object {
         const val INITIAL_PAGE_INDEX = 1
@@ -21,7 +24,15 @@ class HomePagingSource(private val apiService: ApiService) : PagingSource<Int, D
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DealListItem> {
         return try {
             val position = params.key ?: INITIAL_PAGE_INDEX
-            val responseData = apiService.getCurrentDeals(pageNumber = position, pageSize = params.loadSize)
+            val responseData = apiService.getCurrentDeals(
+                pageNumber = position,
+                pageSize = params.loadSize,
+                storeID = dealFilter.storeID,
+                sortBy = dealFilter.sortBy,
+                lowerPrice = dealFilter.lowerPrice,
+                upperPrice = dealFilter.upperPrice,
+                title = dealFilter.title
+            )
 
             LoadResult.Page(
                 data = responseData,

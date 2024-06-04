@@ -13,8 +13,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
+import com.d121211017.gamedealsnew.data.entity.DealFilter
 import com.d121211017.gamedealsnew.data.entity.DealListItem
 import com.d121211017.gamedealsnew.databinding.FragmentHomeBinding
+import com.d121211017.gamedealsnew.ui.MainActivity
 import com.d121211017.gamedealsnew.ui.ViewModelFactory
 import com.d121211017.gamedealsnew.ui.filter.FilterFragment
 import com.d121211017.gamedealsnew.ui.loadStateAdapter.LoadingStateAdapter
@@ -47,10 +49,8 @@ class HomeFragment : Fragment() {
 
         binding.filterIcon.setOnClickListener {
            val bottomSheetFilterDialogFragment  : BottomSheetDialogFragment = FilterFragment()
-            bottomSheetFilterDialogFragment.show(parentFragmentManager, "BSDFilterFragment")
+            bottomSheetFilterDialogFragment.show(childFragmentManager, "BSDFilterFragment")
         }
-
-
 
         homeAdapter?.let {
             setUpRecyclerView(it)
@@ -63,20 +63,15 @@ class HomeFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 it.loadStateFlow.collectLatest { loadStates ->
                     binding.homePg.visibility = if (loadStates.refresh is LoadState.Loading) View.VISIBLE else View.INVISIBLE
+                    binding.homeRv.visibility = if (loadStates.refresh is LoadState.Loading) View.INVISIBLE else View.VISIBLE
                 }
             }
         }
+    }
 
-//        homeAdapter?.let { setUpRecyclerView(it) }
-//
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            viewModel.deals.collectLatest {
-//                homeAdapter?.let { it1 -> updateRecyclerList(it, it1) }
-//            }
-//            homeAdapter?.loadStateFlow?.collectLatest { pagingLoadStates ->
-//                binding.homePg.visibility = if(pagingLoadStates.refresh is LoadState.Loading) View.INVISIBLE else View.VISIBLE
-//            }
-//        }
+    override fun onResume() {
+        super.onResume()
+        homeAdapter?.refresh()
     }
 
     override fun onDestroyView() {
@@ -102,14 +97,8 @@ class HomeFragment : Fragment() {
     ) {
         adapter.submitData(lifecycle,dealList)
     }
-
     private fun getViewModel(appCompatActivity: AppCompatActivity) : HomeViewModel{
         val factory = ViewModelFactory.getViewModelInstance(application = appCompatActivity.application)
         return ViewModelProvider(appCompatActivity, factory)[HomeViewModel::class.java]
     }
-
-    companion object {
-        private const val TAG = "Home Fragment"
-    }
-
 }

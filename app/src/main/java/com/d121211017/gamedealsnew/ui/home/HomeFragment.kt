@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -52,6 +53,8 @@ class HomeFragment : Fragment() {
             bottomSheetFilterDialogFragment.show(childFragmentManager, "BSDFilterFragment")
         }
 
+
+
         homeAdapter?.let {
             setUpRecyclerView(it)
             viewLifecycleOwner.lifecycleScope.launch {
@@ -64,6 +67,9 @@ class HomeFragment : Fragment() {
                 it.loadStateFlow.collectLatest { loadStates ->
                     binding.homePg.visibility = if (loadStates.refresh is LoadState.Loading) View.VISIBLE else View.INVISIBLE
                     binding.homeRv.visibility = if (loadStates.refresh is LoadState.Loading) View.INVISIBLE else View.VISIBLE
+                    if(loadStates.refresh is LoadState.NotLoading && loadStates.append.endOfPaginationReached && homeAdapter!!.itemCount < 1){
+                        Toast.makeText(requireContext(), "Whoops, no deals try something else", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }

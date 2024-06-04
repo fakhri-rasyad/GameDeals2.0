@@ -53,8 +53,6 @@ class HomeFragment : Fragment() {
             bottomSheetFilterDialogFragment.show(childFragmentManager, "BSDFilterFragment")
         }
 
-
-
         homeAdapter?.let {
             setUpRecyclerView(it)
             viewLifecycleOwner.lifecycleScope.launch {

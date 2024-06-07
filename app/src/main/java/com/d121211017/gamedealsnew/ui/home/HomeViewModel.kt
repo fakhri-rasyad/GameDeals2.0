@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val gameDealsRepository: GameDealsRepository): ViewModel() {
-    private var filterData = MutableStateFlow<DealFilter>(DealFilter())
+    private var filterData = MutableStateFlow(DealFilter())
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val deals: Flow<PagingData<DealListItem>> = filterData.flatMapLatest {

@@ -12,6 +12,7 @@ import com.d121211017.gamedealsnew.data.entity.DealListItem
 import com.d121211017.gamedealsnew.databinding.HomeListItemBinding
 
 class HomeListAdapter(
+    private val onItemClickListener: OnItemClickListener
 ) : PagingDataAdapter<DealListItem, HomeListAdapter.ViewHolder>(
     DIFF_CALLBACK) {
     inner class ViewHolder(binding: HomeListItemBinding) : RecyclerView.ViewHolder(binding.root){
@@ -33,12 +34,12 @@ class HomeListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val dealItem = getItem(position)
-        if(dealItem != null){
+        if (dealItem != null) {
             holder.apply {
                 gamePrice.text = dealItem.normalPrice
                 gameDiscountPrice.text = dealItem.salePrice
                 gameTitle.text = dealItem.title
-                gameThumb.load(dealItem.thumb){
+                gameThumb.load(dealItem.thumb) {
                     crossfade(true)
                     transformations(RoundedCornersTransformation(radius = 12.0F))
                 }
@@ -47,12 +48,13 @@ class HomeListAdapter(
                         R.string.store_banner_template,
                         dealItem.storeID
                     )
-                ){
+                ) {
                     crossfade(true)
                 }
             }
-
-
+            holder.itemView.setOnClickListener {
+                onItemClickListener.onItemClick(dealItem.dealID!!)
+            }
         }
     }
 
@@ -68,4 +70,8 @@ class HomeListAdapter(
 
         }
     }
+}
+
+interface OnItemClickListener {
+    fun onItemClick(dealItemId : String)
 }

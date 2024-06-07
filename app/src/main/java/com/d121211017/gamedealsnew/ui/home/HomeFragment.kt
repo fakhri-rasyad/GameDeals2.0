@@ -1,5 +1,6 @@
 package com.d121211017.gamedealsnew.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,14 +15,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
+import com.d121211017.gamedealsnew.R
 import com.d121211017.gamedealsnew.data.entity.DealFilter
 import com.d121211017.gamedealsnew.data.entity.DealListItem
 import com.d121211017.gamedealsnew.databinding.FragmentHomeBinding
 import com.d121211017.gamedealsnew.ui.MainActivity
 import com.d121211017.gamedealsnew.ui.ViewModelFactory
+import com.d121211017.gamedealsnew.ui.deal_detail.DealDetailActivity
+import com.d121211017.gamedealsnew.ui.deal_detail.DealsDetailFragment
 import com.d121211017.gamedealsnew.ui.filter.FilterFragment
 import com.d121211017.gamedealsnew.ui.loadStateAdapter.LoadingStateAdapter
 import com.d121211017.gamedealsnew.ui.recyclerViewAdapter.HomeListAdapter
+import com.d121211017.gamedealsnew.ui.recyclerViewAdapter.OnItemClickListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -38,15 +43,17 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        homeAdapter = HomeListAdapter()
+        homeAdapter = HomeListAdapter(object : OnItemClickListener{
+            override fun onItemClick(dealItemId: String) {
+                navigateToDetail(dealItemId)
+            }
+        })
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = getViewModel(activity as AppCompatActivity)
-        val gridLayoutManager = GridLayoutManager(activity, 2)
-        binding.homeRv.layoutManager = gridLayoutManager
 
         binding.filterIcon.setOnClickListener {
            val bottomSheetFilterDialogFragment  : BottomSheetDialogFragment = FilterFragment()
@@ -87,12 +94,21 @@ class HomeFragment : Fragment() {
         adapter: HomeListAdapter
     ){
         binding.apply {
+            val gridLayoutManager = GridLayoutManager(activity, 2)
+            homeRv.layoutManager = gridLayoutManager
+
             this.homeRv.adapter = adapter.withLoadStateFooter(
                 footer = LoadingStateAdapter {
                     adapter.retry()
                 }
             )
         }
+    }
+
+    private fun navigateToDetail(gameId: String){
+        val intent =  Intent(requireActivity(), DealDetailActivity::class.java)
+        intent.putExtra(DealDetailActivity.DEAL_ID, gameId)
+        startActivity(intent)
     }
 
     private fun updateRecyclerList(

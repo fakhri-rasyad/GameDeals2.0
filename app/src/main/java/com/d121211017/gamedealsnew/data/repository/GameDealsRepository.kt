@@ -5,11 +5,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
+import com.d121211017.gamedealsnew.data.entity.DealDetailResponse
 import com.d121211017.gamedealsnew.data.entity.DealFilter
 import com.d121211017.gamedealsnew.data.entity.DealListItem
 import com.d121211017.gamedealsnew.data.paging.HomePagingSource
 import com.d121211017.gamedealsnew.data.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Call
 
 class GameDealsRepository(
     private val apiService: ApiService
@@ -25,6 +27,10 @@ class GameDealsRepository(
                 HomePagingSource(apiService, dealFilter)
             }
         ).flow
+    }
+
+    fun getDealDetails(gameId: String) : Call<DealDetailResponse> {
+        return apiService.getDealDetails(gameId = gameId)
     }
 
     companion object {

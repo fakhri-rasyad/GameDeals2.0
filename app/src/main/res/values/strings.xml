@@ -26,6 +26,8 @@
     <string name="game_stores_title_text">Game Stores</string>
     <string name="price_range_value">$%1$s - $%2$s</string>
     <string name="cheapshark_base_url">https://www.cheapshark.com%1$s</string>
+    <string name="game_thumbnail">game thumbnail</string>
+    <string name="back_button">back button</string>
     <string-array name="sort_by">
         <item>DealRating</item>
         <item>Title</item>

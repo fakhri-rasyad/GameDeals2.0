@@ -29,11 +29,17 @@ class DealDetailActivity : AppCompatActivity() {
 
         viewModel?.dealDetail?.observe(this){
             binding?.apply {
-                gameThumb
-                    .load(it?.gameInfo?.thumb){
-                        crossfade(true)
-                        placeholder(R.drawable.cheapshark_logo)
-                    }
+                gamePreview.load(it?.gameInfo?.thumb){
+                    crossfade(true)
+                    placeholder(R.drawable.cheapshark_logo)
+                }
+                backButton.setOnClickListener {
+                    finish()
+                }
+
+                gameTitle.text = it?.gameInfo?.name
+                gameDiscount.text = getString(R.string.price_template, it?.gameInfo?.salePrice)
+                gamePrice.text = getString(R.string.price_template, it?.gameInfo?.retailPrice)
             }
         }
     }

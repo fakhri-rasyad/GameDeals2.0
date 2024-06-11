@@ -2,27 +2,21 @@ package com.d121211017.gamedealsnew.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
-import com.d121211017.gamedealsnew.R
-import com.d121211017.gamedealsnew.data.entity.DealFilter
 import com.d121211017.gamedealsnew.data.entity.DealListItem
 import com.d121211017.gamedealsnew.databinding.FragmentHomeBinding
-import com.d121211017.gamedealsnew.ui.MainActivity
 import com.d121211017.gamedealsnew.ui.ViewModelFactory
 import com.d121211017.gamedealsnew.ui.deal_detail.DealDetailActivity
-import com.d121211017.gamedealsnew.ui.deal_detail.DealsDetailFragment
 import com.d121211017.gamedealsnew.ui.filter.FilterFragment
 import com.d121211017.gamedealsnew.ui.loadStateAdapter.LoadingStateAdapter
 import com.d121211017.gamedealsnew.ui.recyclerViewAdapter.HomeListAdapter

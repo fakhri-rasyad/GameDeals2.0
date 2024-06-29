@@ -1,5 +1,6 @@
 package com.d121211017.gamedealsnew.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.paging.Pager
@@ -11,6 +12,7 @@ import com.d121211017.gamedealsnew.data.entity.DealDetailResponse
 import com.d121211017.gamedealsnew.data.entity.DealFilter
 import com.d121211017.gamedealsnew.data.entity.DealListItem
 import com.d121211017.gamedealsnew.data.entity.GameSearchResponse
+import com.d121211017.gamedealsnew.data.entity.GameSearchResponseItem
 import com.d121211017.gamedealsnew.data.paging.HomePagingSource
 import com.d121211017.gamedealsnew.data.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
@@ -40,7 +42,7 @@ class GameDealsRepository(
         return apiService.getDealDetails(gameId = gameId)
     }
 
-    fun getGameList(gameName: String) : LiveData<ResultState<GameSearchResponse>> = liveData {
+    fun getGameList(gameName: String) : LiveData<ResultState<List<GameSearchResponseItem>>> = liveData {
         emit(ResultState.Loading)
         try{
             val result = apiService.getGameList(title = gameName)
@@ -56,6 +58,7 @@ class GameDealsRepository(
                     emit(ResultState.Error("Network error. Please check your connection and try again."))
                 }
                 else -> {
+                    Log.e("REPOSITORY", e.message.toString())
                     emit(ResultState.Error("An unknown error occured"))
                 }
             }

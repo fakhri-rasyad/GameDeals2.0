@@ -4,6 +4,7 @@ import androidx.compose.foundation.pager.PageSize
 import com.d121211017.gamedealsnew.data.entity.DealDetailResponse
 import com.d121211017.gamedealsnew.data.entity.DealListItem
 import com.d121211017.gamedealsnew.data.entity.GameSearchResponse
+import com.d121211017.gamedealsnew.data.entity.GameSearchResponseItem
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -30,5 +31,5 @@ interface ApiService {
     @GET("games")
     suspend fun getGameList(
         @Query("title") title: String?
-     ) : GameSearchResponse
+     ) : List<GameSearchResponseItem>
 }

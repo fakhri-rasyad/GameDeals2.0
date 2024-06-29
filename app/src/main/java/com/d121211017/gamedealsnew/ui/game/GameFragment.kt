@@ -5,56 +5,74 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.d121211017.gamedealsnew.R
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import com.d121211017.gamedealsnew.data.ResultState
+import com.d121211017.gamedealsnew.data.entity.GameSearchResponseItem
+import com.d121211017.gamedealsnew.databinding.FragmentGameBinding
+import com.d121211017.gamedealsnew.makeToast
+import com.d121211017.gamedealsnew.ui.ViewModelFactory
+import com.d121211017.gamedealsnew.ui.recyclerViewAdapter.GameListAdapter
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [GameFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class GameFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentGameBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var viewModel : GameViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_game, container, false)
+    ): View {
+        _binding = FragmentGameBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment GameFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            GameFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = getViewModel(activity as AppCompatActivity)
+        binding.apply {
+            searchButton.setOnClickListener {
+                val gameTitle = this.gameSearchEditText.text.toString()
+                viewModel.getGameList(gameTitle).observe(viewLifecycleOwner){ gameResult ->
+                    when(gameResult){
+                        is ResultState.Success -> setUpRecyclerView(gameResult.data as List<GameSearchResponseItem>)
+                        is ResultState.Loading -> showLoading(true)
+                        is ResultState.Error -> showError(gameResult.message)
+                    }
                 }
             }
+        }
+    }
+
+    private fun setUpRecyclerView(gameItemList: List<GameSearchResponseItem>){
+        binding.apply {
+            showLoading(false)
+            val gameGridLayoutManager = GridLayoutManager(requireContext(), 2)
+            val gameAdapter = GameListAdapter(gameItemList)
+            gameRv.apply {
+                adapter = gameAdapter
+                layoutManager = gameGridLayoutManager
+            }
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean){
+        binding.gamePg.visibility = if(isLoading) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun showError(message: String){
+        showLoading(false)
+        makeToast(requireContext(), message)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun getViewModel(appCompatActivity: AppCompatActivity) : GameViewModel {
+        val factory = ViewModelFactory.getViewModelInstance(application = appCompatActivity.application)
+        return ViewModelProvider(appCompatActivity, factory)[GameViewModel::class.java]
     }
 }

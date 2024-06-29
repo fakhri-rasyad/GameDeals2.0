@@ -1,17 +1,24 @@
 package com.d121211017.gamedealsnew.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
+import com.d121211017.gamedealsnew.data.ResultState
 import com.d121211017.gamedealsnew.data.entity.DealDetailResponse
 import com.d121211017.gamedealsnew.data.entity.DealFilter
 import com.d121211017.gamedealsnew.data.entity.DealListItem
+import com.d121211017.gamedealsnew.data.entity.GameSearchResponse
 import com.d121211017.gamedealsnew.data.paging.HomePagingSource
 import com.d121211017.gamedealsnew.data.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
+import retrofit2.HttpException
+import java.io.IOException
 
 class GameDealsRepository(
     private val apiService: ApiService
@@ -31,6 +38,37 @@ class GameDealsRepository(
 
     fun getDealDetails(gameId: String) : Call<DealDetailResponse> {
         return apiService.getDealDetails(gameId = gameId)
+    }
+
+    fun getGameList(gameName: String) : LiveData<ResultState<GameSearchResponse>> = liveData {
+        emit(ResultState.Loading)
+        try{
+            val result = apiService.getGameList(title = gameName)
+            emit(ResultState.Success(result))
+        } catch (e: Exception){
+            when(e){
+                is HttpException -> {
+                    val errorBody = e.response()?.errorBody()?.string()
+                    val errorMessage = extractErrorMessage(errorBody)
+                    emit(ResultState.Error(errorMessage ?: "An unknown error occured"))
+                }
+                is IOException -> {
+                    emit(ResultState.Error("Network error. Please check your connection and try again."))
+                }
+                else -> {
+                    emit(ResultState.Error("An unknown error occured"))
+                }
+            }
+        }
+    }
+
+    private fun extractErrorMessage(errorBody: String?): String? {
+        return try {
+            val json = JSONObject(errorBody)
+            json.getString("message")
+        } catch (e: JSONException) {
+            null
+        }
     }
 
     companion object {

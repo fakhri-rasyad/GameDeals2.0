@@ -3,6 +3,7 @@ package com.d121211017.gamedealsnew.data.retrofit
 import androidx.compose.foundation.pager.PageSize
 import com.d121211017.gamedealsnew.data.entity.DealDetailResponse
 import com.d121211017.gamedealsnew.data.entity.DealListItem
+import com.d121211017.gamedealsnew.data.entity.GameSearchResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -25,4 +26,9 @@ interface ApiService {
     fun getDealDetails(
         @Query("id", encoded = true) gameId : String,
     ) : Call<DealDetailResponse>
+
+    @GET("games")
+    suspend fun getGameList(
+        @Query("title") title: String?
+     ) : GameSearchResponse
 }

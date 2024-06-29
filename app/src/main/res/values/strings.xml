@@ -32,6 +32,7 @@
     <string name="back_button_text">Back</string>
     <string name="buy">Buy</string>
     <string name="deal_detail_other_deals_title">Other deals</string>
+    <string name="game_search_hint">Find your games here</string>
     <string-array name="sort_by">
         <item>DealRating</item>
         <item>Title</item>

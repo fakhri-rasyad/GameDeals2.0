@@ -29,7 +29,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
-
     <TextView
         android:id="@+id/game_title"
         android:layout_width="match_parent"
@@ -41,7 +40,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
-
     <TextView
         android:id="@+id/cheaper_price_title"
         android:layout_width="match_parent"
@@ -55,7 +53,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cheaper_deals_rv"
         android:layout_width="match_parent"
@@ -67,7 +64,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
-
     <RelativeLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"

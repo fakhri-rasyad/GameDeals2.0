@@ -1,9 +1,8 @@
 package com.d121211017.gamedealsnew.data.retrofit
 
-import androidx.compose.foundation.pager.PageSize
 import com.d121211017.gamedealsnew.data.entity.DealDetailResponse
 import com.d121211017.gamedealsnew.data.entity.DealListItem
-import com.d121211017.gamedealsnew.data.entity.GameSearchResponse
+import com.d121211017.gamedealsnew.data.entity.GameDealsResponse
 import com.d121211017.gamedealsnew.data.entity.GameSearchResponseItem
 import retrofit2.Call
 import retrofit2.http.GET
@@ -32,4 +31,9 @@ interface ApiService {
     suspend fun getGameList(
         @Query("title") title: String?
      ) : List<GameSearchResponseItem>
+
+    @GET("games")
+    suspend fun getGameDetail(
+        @Query("id") id: Int
+    ) : GameDealsResponse
 }

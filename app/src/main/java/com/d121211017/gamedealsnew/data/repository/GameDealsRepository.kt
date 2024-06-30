@@ -6,12 +6,11 @@ import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.d121211017.gamedealsnew.data.ResultState
 import com.d121211017.gamedealsnew.data.entity.DealDetailResponse
 import com.d121211017.gamedealsnew.data.entity.DealFilter
 import com.d121211017.gamedealsnew.data.entity.DealListItem
-import com.d121211017.gamedealsnew.data.entity.GameSearchResponse
+import com.d121211017.gamedealsnew.data.entity.GameDealsResponse
 import com.d121211017.gamedealsnew.data.entity.GameSearchResponseItem
 import com.d121211017.gamedealsnew.data.paging.HomePagingSource
 import com.d121211017.gamedealsnew.data.retrofit.ApiService
@@ -46,6 +45,29 @@ class GameDealsRepository(
         emit(ResultState.Loading)
         try{
             val result = apiService.getGameList(title = gameName)
+            emit(ResultState.Success(result))
+        } catch (e: Exception){
+            when(e){
+                is HttpException -> {
+                    val errorBody = e.response()?.errorBody()?.string()
+                    val errorMessage = extractErrorMessage(errorBody)
+                    emit(ResultState.Error(errorMessage ?: "An unknown error occured"))
+                }
+                is IOException -> {
+                    emit(ResultState.Error("Network error. Please check your connection and try again."))
+                }
+                else -> {
+                    Log.e("REPOSITORY", e.message.toString())
+                    emit(ResultState.Error("An unknown error occured"))
+                }
+            }
+        }
+    }
+
+    fun getGameDetail(gameId: Int) : LiveData<ResultState<GameDealsResponse>> = liveData {
+        emit(ResultState.Loading)
+        try{
+            val result = apiService.getGameDetail(id = gameId)
             emit(ResultState.Success(result))
         } catch (e: Exception){
             when(e){

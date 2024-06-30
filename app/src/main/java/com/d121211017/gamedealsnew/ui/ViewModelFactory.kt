@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.d121211017.gamedealsnew.data.Injection
 import com.d121211017.gamedealsnew.ui.deal_detail.DealDetailViewModel
 import com.d121211017.gamedealsnew.ui.game.GameViewModel
+import com.d121211017.gamedealsnew.ui.game_detail.GameDetailViewModel
 import com.d121211017.gamedealsnew.ui.home.HomeViewModel
 
 class ViewModelFactory private constructor(private val application: Application) : ViewModelProvider.NewInstanceFactory(){
@@ -31,6 +32,8 @@ class ViewModelFactory private constructor(private val application: Application)
             return DealDetailViewModel(Injection.getRepository(context = application.applicationContext)) as T
         } else if (modelClass.isAssignableFrom(GameViewModel::class.java)){
             return GameViewModel(Injection.getRepository(context = application.applicationContext)) as T
+        } else if (modelClass.isAssignableFrom(GameDetailViewModel::class.java)){
+            return GameDetailViewModel(Injection.getRepository(context = application.applicationContext)) as T
         }
         throw IllegalArgumentException("Unknown ViewModelClass ${modelClass.name}")
     }

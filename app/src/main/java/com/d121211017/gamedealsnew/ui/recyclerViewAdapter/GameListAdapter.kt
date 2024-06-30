@@ -5,11 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.d121211017.gamedealsnew.data.entity.GameSearchResponse
 import com.d121211017.gamedealsnew.data.entity.GameSearchResponseItem
 import com.d121211017.gamedealsnew.databinding.GameListItemBinding
 
-class GameListAdapter(private val gameList : List<GameSearchResponseItem>) :
+class GameListAdapter(
+    private val gameList : List<GameSearchResponseItem>,
+    private val onGameClick : (String) -> Unit
+) :
     RecyclerView.Adapter<GameListAdapter.ViewHolder>() {
         class ViewHolder(binding: GameListItemBinding): RecyclerView.ViewHolder(binding.root){
             val gameThumb = binding.gameThumb
@@ -30,6 +32,9 @@ class GameListAdapter(private val gameList : List<GameSearchResponseItem>) :
         holder.apply {
             gameTitle.text = gameItem.external
             gameThumb.load(gameItem.thumb)
+        }
+        holder.itemView.setOnClickListener {
+            onGameClick(gameItem.gameID ?: "")
         }
     }
 }

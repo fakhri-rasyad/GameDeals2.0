@@ -1,5 +1,6 @@
 package com.d121211017.gamedealsnew.ui.game
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import com.d121211017.gamedealsnew.data.entity.GameSearchResponseItem
 import com.d121211017.gamedealsnew.databinding.FragmentGameBinding
 import com.d121211017.gamedealsnew.makeToast
 import com.d121211017.gamedealsnew.ui.ViewModelFactory
+import com.d121211017.gamedealsnew.ui.game_detail.GameDetailActivity
 import com.d121211017.gamedealsnew.ui.recyclerViewAdapter.GameListAdapter
 
 class GameFragment : Fragment() {
@@ -49,7 +51,11 @@ class GameFragment : Fragment() {
         binding.apply {
             showLoading(false)
             val gameGridLayoutManager = GridLayoutManager(requireContext(), 2)
-            val gameAdapter = GameListAdapter(gameItemList)
+            val gameAdapter = GameListAdapter(gameItemList){gameId ->
+                val intent = Intent(requireContext(), GameDetailActivity::class.java)
+                intent.putExtra(GameDetailActivity.GAME_ID, gameId)
+                startActivity(intent)
+            }
             gameRv.apply {
                 adapter = gameAdapter
                 layoutManager = gameGridLayoutManager
